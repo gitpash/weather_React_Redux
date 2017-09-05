@@ -1,1 +1,2 @@
-# weather_React_Redux
+# Weather app
+test quiz for weather application
