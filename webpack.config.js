@@ -1,44 +1,39 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require("webpack");
-const path = require("path");
+/* eslint-disable */
+const webpack = require('webpack');
 
 module.exports = {
-  entry: [
-    "webpack-dev-server/client?http://localhost:8080",
-    "webpack/hot/only-dev-server",
-    "./src/index.js"
-  ],
+  entry: ['webpack-dev-server/client?http://localhost:8080', 'webpack/hot/only-dev-server', './src/index.js'],
+  stats: {
+    assets: false,
+    colors: true,
+    version: true,
+    hash: false,
+    timings: true,
+    chunks: false,
+    chunkModules: false,
+    children: false
+  },
   module: {
     loaders: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
-      },
-      {
-        test: /\.css$/,
-        loaders: [
-          "style-loader?sourceMap",
-          "css-loader?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]"
-        ]
+        loader: ['react-hot-loader/webpack', 'babel-loader']
       }
     ]
   },
   resolve: {
-    extensions: ["*", ".js", ".jsx", ".css"]
+    extensions: ['*', '.js', '.jsx']
   },
   output: {
-    path: `${__dirname}/dist`,
-    publicPath: "/",
-    filename: "bundle.js"
+    path: __dirname + '/dist',
+    publicPath: '/',
+    filename: 'bundle.js'
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({ template: "./app/index.html" }),
-    new webpack.NamedModulesPlugin()
-  ],
   devServer: {
-    contentBase: "./dist",
+    contentBase: './dist',
     hot: true
-  }
+  },
+  devtool: 'inline-source-map',
+  plugins: [new webpack.NamedModulesPlugin()]
 };
