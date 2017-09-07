@@ -3,10 +3,14 @@ import reducers from "./reducers";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { createStore, applyMiddleware, compose } from "redux";
+import { loadState, saveState } from "./helpers/localStorage";
 
-export const makeStore = () => {
+const persistedState = loadState();
+
+const makeStore = () => {
   return createStore(
     reducers,
+    persistedState,
     compose(
       applyMiddleware(thunk),
       // this code allows to use redux dev tools chrome extension
@@ -18,5 +22,9 @@ export const makeStore = () => {
     )
   );
 };
+const store = makeStore();
 
-export const wrap = child => <Provider store={makeStore()}>{child}</Provider>;
+store.subscribe(() => {
+  saveState(store.getState());
+});
+export const wrap = child => <Provider store={store}>{child}</Provider>;
